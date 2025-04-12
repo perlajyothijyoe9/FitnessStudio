@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Membership</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="max-w-lg mx-auto p-6 bg-white shadow-md rounded mt-10">
+      <h2 class="text-2xl font-semibold mb-6">Add Membership</h2>
+      <form method="POST" action="{{ url_for('add_membership') }}">
+        <label for="name" class="block text-sm font-medium text-gray-700"
+          >Membership Name</label
+        >
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          required
+        />
+
+        <label for="price" class="block text-sm font-medium text-gray-700"
+          >Price</label
+        >
+        <input
+          type="number"
+          id="price"
+          name="price"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          required
+        />
+
+        <label
+          for="validity_period"
+          class="block text-sm font-medium text-gray-700"
+          >Validity Period</label
+        >
+        <select
+          name="validity_period"
+          id="validity_period"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+        >
+          <option value="30">1 Month</option>
+          <option value="90">3 Months</option>
+          <option value="182">6 Months</option>
+          <option value="365">1 Year</option>
+        </select>
+
+        <label for="features" class="block text-sm font-medium text-gray-700"
+          >Features</label
+        >
+        <textarea
+          id="features"
+          name="features"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter features, separated by commas (e.g., Gym Access, Recorded Sessions)"
+        ></textarea>
+
+        <label for="diet_plan_included" class="inline-flex items-center">
+          <input
+            type="checkbox"
+            id="diet_plan_included"
+            name="diet_plan_included"
+            class="mr-2"
+          />
+          Include Diet Plan
+        </label>
+
+        <label for="auto_renewal" class="inline-flex items-center mt-3">
+          <input
+            type="checkbox"
+            id="auto_renewal"
+            name="auto_renewal"
+            class="mr-2"
+          />
+          Auto-Renewal
+        </label>
+
+        <!-- Diet Plan Form (Hidden by Default) -->
+        <div
+          id="dietPlanForm"
+          class="mt-4 bg-gray-100 p-4 rounded"
+          style="display: none"
+        >
+          <h3 class="text-xl font-semibold mb-4">Diet Plan Details</h3>
+
+          <label for="diet_name" class="block text-sm font-medium text-gray-700"
+            >Diet Plan Name</label
+          >
+          <input
+            type="text"
+            id="diet_name"
+            name="diet_name"
+            class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          />
+
+          <label
+            for="diet_description"
+            class="block text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            id="diet_description"
+            name="diet_description"
+            class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+            placeholder="Describe the diet plan details here..."
+          ></textarea>
+
+          <h4 class="text-lg font-semibold mt-4 mb-2">Meal Schedule</h4>
+
+          <label for="breakfast" class="block text-sm font-medium text-gray-700"
+            >Breakfast</label
+          >
+          <textarea
+            id="breakfast"
+            name="meal_schedule[breakfast]"
+            class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter breakfast details"
+          ></textarea>
+
+          <label for="lunch" class="block text-sm font-medium text-gray-700"
+            >Lunch</label
+          >
+          <textarea
+            id="lunch"
+            name="meal_schedule[lunch]"
+            class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter lunch details"
+          ></textarea>
+
+          <label for="dinner" class="block text-sm font-medium text-gray-700"
+            >Dinner</label
+          >
+          <textarea
+            id="dinner"
+            name="meal_schedule[dinner]"
+            class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter dinner details"
+          ></textarea>
+
+          <label
+            for="start_date"
+            class="block text-sm font-medium text-gray-700"
+            >Start Date</label
+          >
+          <input
+            type="date"
+            id="start_date"
+            name="start_date"
+            class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          />
+
+          <label for="end_date" class="block text-sm font-medium text-gray-700"
+            >End Date</label
+          >
+          <input
+            type="date"
+            id="end_date"
+            name="end_date"
+            class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="bg-blue-600 text-white py-2 px-4 rounded mt-6"
+        >
+          Add Membership
+        </button>
+        <button
+          onclick="window.history.back()"
+          class="bg-gray-300 text-gray-800 py-2 px-4 rounded mb-4 hover:bg-gray-400"
+        >
+          Back
+        </button>
+      </form>
+    </div>
+    <script>
+      // Function to toggle diet plan form visibility
+      function toggleDietPlanForm() {
+        const dietPlanForm = document.getElementById("dietPlanForm");
+        const dietPlanIncluded = document.getElementById("diet_plan_included");
+
+        dietPlanForm.style.display = dietPlanIncluded.checked
+          ? "block"
+          : "none";
+      }
+
+      // Event listener to handle checkbox changes
+      window.addEventListener("DOMContentLoaded", (event) => {
+        const dietPlanIncluded = document.getElementById("diet_plan_included");
+
+        // Attach the event listener to checkbox change
+        dietPlanIncluded.addEventListener("change", toggleDietPlanForm);
+
+        // Initial check to see if the form should be shown
+        toggleDietPlanForm();
+      });
+    </script>
+  </body>
+</html>

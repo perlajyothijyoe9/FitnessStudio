@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Class</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <header class="bg-blue-600 text-white p-4">
+      <h1 class="text-3xl font-bold">Edit Class</h1>
+    </header>
+    <main class="p-6">
+      <form
+        action="{{ url_for('edit_class', class_id=class_data['_id']) }}"
+        method="post"
+        class="bg-white p-6 rounded shadow-md"
+      >
+        <!-- Class Name -->
+        <label for="name" class="block text-lg font-semibold mb-2">Class Name:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value="{{ class_data['name'] }}"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <!-- Category -->
+        <label for="category" class="block text-lg font-semibold mb-2">Category:</label>
+        <input
+          type="text"
+          id="category"
+          name="category"
+          value="{{ class_data['category'] }}"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <!-- Capacity -->
+        <label for="capacity" class="block text-lg font-semibold mb-2">Capacity:</label>
+        <input
+          type="number"
+          id="capacity"
+          name="capacity"
+          value="{{ class_data['capacity'] }}"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <!-- Start Date -->
+        <label for="start_date" class="block text-lg font-semibold mb-2">Start Date:</label>
+        <input
+          type="date"
+          id="start_date"
+          name="start_date"
+          value="{{ class_data['schedule']['start_date'].strftime('%Y-%m-%d') }}"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <!-- End Date -->
+        <label for="end_date" class="block text-lg font-semibold mb-2">End Date:</label>
+        <input
+          type="date"
+          id="end_date"
+          name="end_date"
+          value="{{ class_data['schedule']['end_date'].strftime('%Y-%m-%d') }}"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <!-- Time -->
+        <label for="time" class="block text-lg font-semibold mb-2">Class Time:</label>
+        <select
+          id="time"
+          name="time"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        >
+          <option value="07:00 AM to 08:00 AM" {% if class_data['schedule']['time'] == "07:00 AM to 08:00 AM" %} selected {% endif %}>07:00 AM to 08:00 AM</option>
+          <option value="08:00 AM to 09:00 AM" {% if class_data['schedule']['time'] == "08:00 AM to 09:00 AM" %} selected {% endif %}>08:00 AM to 09:00 AM</option>
+          <option value="09:00 AM to 10:00 AM" {% if class_data['schedule']['time'] == "09:00 AM to 10:00 AM" %} selected {% endif %}>09:00 AM to 10:00 AM</option>
+          <option value="10:00 AM to 11:00 AM" {% if class_data['schedule']['time'] == "10:00 AM to 11:00 AM" %} selected {% endif %}>10:00 AM to 11:00 AM</option>
+          <option value="11:00 AM to 12:00 PM" {% if class_data['schedule']['time'] == "11:00 AM to 12:00 PM" %} selected {% endif %}>11:00 AM to 12:00 PM</option>
+          <option value="12:00 PM to 01:00 PM" {% if class_data['schedule']['time'] == "12:00 PM to 01:00 PM" %} selected {% endif %}>12:00 PM to 01:00 PM</option>
+        </select>
+
+        <!-- Venue -->
+        <label for="venue" class="block text-lg font-semibold mb-2">Venue:</label>
+        <input
+          type="text"
+          id="venue"
+          name="venue"
+          value="{{ class_data['schedule']['venue'] }}"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <!-- Submit and Back Buttons -->
+        <div class="flex items-center">
+          <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded">
+            Save Changes
+          </button>
+          <button
+            type="button"
+            onclick="window.history.back()"
+            class="ml-auto bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+          >
+            Back
+          </button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

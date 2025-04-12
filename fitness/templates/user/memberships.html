@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Membership Plans</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="flex flex-col min-h-screen">
+      <!-- Header -->
+      <header class="bg-blue-600 text-white p-4">
+        <h1 class="text-3xl font-bold">Choose Your Membership Plan</h1>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-6">
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for membership in memberships %}
+          <div class="bg-white p-6 rounded shadow-md">
+            <h2 class="text-xl font-semibold mb-2">{{ membership.name }}</h2>
+            <p class="text-gray-600">Price: ${{ membership.price }}</p>
+            <p class="text-gray-600">
+              Validity: {{ membership.validity_period }}
+            </p>
+            <ul class="text-gray-600 mt-2">
+              <li>
+                Diet Plan Included: {{ 'Yes' if membership.diet_plan_included
+                else 'No' }}
+              </li>
+              <li>
+                Auto-Renewal: {{ 'Yes' if membership.auto_renewal else 'No' }}
+              </li>
+            </ul>
+            <h3 class="font-semibold mt-4">Features:</h3>
+            <ul class="list-disc list-inside text-gray-600">
+              {% for feature in membership.features %}
+              <li>{{ feature }}</li>
+              {% endfor %}
+            </ul>
+            <button
+              onclick="showPaymentPopup('{{ membership._id }}', '{{ membership.price }}', '{{ membership.validity_period }}')"
+              class="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+            >
+              Purchase Membership
+            </button>
+          </div>
+          {% endfor %}
+        </section>
+      </main>
+    </div>
+
+    <!-- Payment Popup -->
+    <div
+      id="paymentPopup"
+      class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden"
+    >
+      <div class="bg-white p-6 rounded shadow-lg w-1/3">
+        <h2 class="text-xl font-semibold mb-4">Payment Details</h2>
+
+        <p class="text-gray-600 mb-2">
+          <strong>Membership Start Date:</strong> <span id="startDate"></span>
+        </p>
+        <p class="text-gray-600 mb-2">
+          <strong>Membership End Date:</strong> <span id="endDate"></span>
+        </p>
+        <p class="text-gray-600 mb-4">
+          <strong>Price:</strong> $<span id="membershipPrice"></span>
+        </p>
+
+        <label class="block mb-2">Card Holder Name</label>
+        <input
+          type="text"
+          id="cardHolderName"
+          class="w-full p-2 border rounded mb-4"
+        />
+
+        <label class="block mb-2">Card Number</label>
+        <input
+          type="text"
+          id="cardNumber"
+          class="w-full p-2 border rounded mb-4"
+        />
+
+        <label class="block mb-2">Expiration Date</label>
+        <input
+          type="text"
+          id="expiryDate"
+          class="w-full p-2 border rounded mb-4"
+        />
+
+        <label class="block mb-2">CVV</label>
+        <input type="text" id="cvv" class="w-full p-2 border rounded mb-4" />
+
+        <button
+          id="payNowButton"
+          class="bg-blue-500 text-white py-2 px-4 rounded"
+          onclick="processPayment()"
+        >
+          Pay Now
+        </button>
+        <button
+          onclick="closePaymentPopup()"
+          class="ml-4 bg-gray-300 text-gray-800 py-2 px-4 rounded"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+      let selectedMembershipId;
+      let selectedAmount;
+      let selectedStartDate;
+      let selectedEndDate;
+
+      function showPaymentPopup(membershipId, amount, validity) {
+        selectedMembershipId = membershipId;
+        selectedAmount = amount;
+
+        // Calculate start date and end date based on the validity attribute
+        const startDate = new Date();
+        const endDate = new Date();
+        endDate.setDate(startDate.getDate() + parseInt(validity)); // `validity` in days
+
+        selectedStartDate = startDate.toLocaleDateString();
+        selectedEndDate = endDate.toLocaleDateString();
+
+        // Populate the payment popup with calculated details
+        document.getElementById("startDate").textContent = selectedStartDate;
+        document.getElementById("endDate").textContent = selectedEndDate;
+        document.getElementById("membershipPrice").textContent = selectedAmount;
+
+        document.getElementById("paymentPopup").classList.remove("hidden");
+      }
+
+      function closePaymentPopup() {
+        document.getElementById("paymentPopup").classList.add("hidden");
+      }
+
+      function processPayment() {
+        const cardHolderName = document.getElementById("cardHolderName").value;
+        const cardNumber = document.getElementById("cardNumber").value;
+        const expiryDate = document.getElementById("expiryDate").value;
+        const cvv = document.getElementById("cvv").value;
+
+        if (!cardHolderName || !cardNumber || !expiryDate || !cvv) {
+          alert("Please fill in all payment details.");
+          return;
+        }
+
+        fetch("{{ url_for('initiate_payment') }}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token() }}",
+          },
+          body: JSON.stringify({
+            membership_id: selectedMembershipId,
+            amount: selectedAmount,
+            card_holder_name: cardHolderName,
+            card_number: cardNumber,
+            expiry_date: expiryDate,
+            cvv: cvv,
+            start_date: selectedStartDate,
+            end_date: selectedEndDate,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              alert("Payment successful!");
+              window.location.href = "{{ url_for('user_dashboard') }}";
+            } else {
+              alert("Payment failed. Please try again.");
+            }
+          })
+          .catch((error) => console.error("Error:", error))
+          .finally(() => closePaymentPopup());
+      }
+    </script>
+  </body>
+</html>

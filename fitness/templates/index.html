@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness Center</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <!-- Header -->
+    <header class="bg-green-600 text-white p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold">Fitness Center</h1>
+          <p>Welcome to your fitness management dashboard</p>
+        </div>
+        <div class="flex space-x-4">
+          {% if is_logged_in %}
+          <a
+            href="/logout"
+            class="bg-white text-green-600 px-4 py-2 rounded-md hover:bg-gray-200"
+            >Logout</a]
+            \]
+          >
+          {% else %}
+          <a
+            href="/login"
+            class="bg-white text-green-600 px-4 py-2 rounded-md hover:bg-gray-200"
+            >Login</a
+          >
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <!-- Search Classes Form -->
+    <section class="container mx-auto mt-8 p-4 bg-white shadow-md rounded">
+      <h2 class="text-2xl font-semibold mb-4">Search for Classes</h2>
+      <form
+        action="{{ url_for('search_classes') }}"
+        method="GET"
+        class="space-y-4"
+      >
+        <div>
+          <label for="category" class="block text-sm font-medium text-gray-700"
+            >Class Category</label
+          >
+          <select
+            id="category"
+            name="category"
+            class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+          >
+            <option value="">Select a category</option>
+            <option value="Yoga">Yoga</option>
+            <option value="Pilates">Pilates</option>
+            <option value="Strength Training">Strength Training</option>
+            <option value="Cardio">Cardio</option>
+          </select>
+        </div>
+        <div>
+          <label for="date" class="block text-sm font-medium text-gray-700"
+            >Date</label
+          >
+          <input
+            type="date"
+            id="date"
+            name="date"
+            class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-green-600 text-white p-2 rounded-md hover:bg-green-700"
+        >
+          Search
+        </button>
+      </form>
+    </section>
+
+    <!-- Additional Content (Optional) -->
+    <section class="container mx-auto mt-8 p-4 bg-white shadow-md rounded">
+      <h2 class="text-2xl font-semibold mb-4">Welcome to the Fitness Center</h2>
+      <p>
+        Explore our classes, book your sessions, and manage your fitness journey
+        with us!
+      </p>
+      <!-- Any additional content or links can be added here -->
+    </section>
+  </body>
+</html>

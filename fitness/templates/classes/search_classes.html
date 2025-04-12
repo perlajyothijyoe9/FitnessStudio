@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Search Results</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+      <h1 class="text-3xl font-bold mb-6">Class Search Results</h1>
+
+      <!-- Class List -->
+      {% if classes %} {% for cls in classes %}
+      <div class="bg-white p-4 mb-4 shadow rounded">
+        <h2 class="text-2xl font-semibold">{{ cls.name }}</h2>
+        <p>Category: {{ cls.category }}</p>
+        <p>Capacity: {{ cls.capacity }}</p>
+        <p>Schedule:</p>
+        <ul>
+          <li>Date: {{ cls.schedule.date }}</li>
+          <li>Start Time: {{ cls.schedule.start_time }}</li>
+          <li>End Time: {{ cls.schedule.end_time }}</li>
+          <li>Venue: {{ cls.schedule.venue }}</li>
+        </ul>
+      </div>
+      {% endfor %} {% else %}
+      <p>No classes found for the selected criteria.</p>
+      {% endif %}
+
+      <div class="mt-6 flex justify-center">
+        <form action="{{ url_for('login') }}" method="get">
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-600 text-white py-4 px-32 rounded"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

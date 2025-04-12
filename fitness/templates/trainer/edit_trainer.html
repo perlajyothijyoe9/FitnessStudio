@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Trainer</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="max-w-lg mx-auto p-6 bg-white shadow-md rounded mt-10">
+      <h2 class="text-2xl font-semibold mb-6">Edit Trainer</h2>
+      <form
+        action="{{ url_for('edit_trainer', trainer_id=trainer['_id']) }}"
+        method="post"
+      >
+        <label for="firstname" class="block text-sm font-medium text-gray-700"
+          >First Name</label
+        >
+        <input
+          type="text"
+          id="firstname"
+          name="firstname"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['firstname'] }}"
+          required
+        />
+
+        <label for="lastname" class="block text-sm font-medium text-gray-700"
+          >Last Name</label
+        >
+        <input
+          type="text"
+          id="lastname"
+          name="lastname"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['lastname'] }}"
+          required
+        />
+
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['email'] }}"
+          required
+        />
+
+        <label
+          for="phone_number"
+          class="block text-sm font-medium text-gray-700"
+          >Phone Number</label
+        >
+        <input
+          type="tel"
+          id="phone_number"
+          name="phone_number"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['phone_number'] }}"
+        />
+
+        <label for="city" class="block text-sm font-medium text-gray-700"
+          >City</label
+        >
+        <input
+          type="text"
+          id="city"
+          name="city"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['city'] }}"
+        />
+
+        <label for="zipcode" class="block text-sm font-medium text-gray-700"
+          >Zip Code</label
+        >
+        <input
+          type="text"
+          id="zipcode"
+          name="zipcode"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['zipcode'] }}"
+        />
+
+        <label for="ssn" class="block text-sm font-medium text-gray-700"
+          >SSN</label
+        >
+        <input
+          type="text"
+          id="ssn"
+          name="ssn"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['ssn'] }}"
+          pattern="\d{3}-\d{2}-\d{4}"
+          title="SSN must be in the format XXX-XX-XXXX"
+          maxlength="11"
+        />
+
+        <label for="expertise" class="block text-sm font-medium text-gray-700"
+          >Expertise</label
+        >
+        <input
+          type="text"
+          id="expertise"
+          name="expertise"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['expertise'] }}"
+        />
+
+        <label for="experience" class="block text-sm font-medium text-gray-700"
+          >Experience (in years)</label
+        >
+        <input
+          type="number"
+          id="experience"
+          name="experience"
+          class="mt-1 mb-3 block w-full p-2 border border-gray-300 rounded"
+          value="{{ trainer['experience'] }}"
+        />
+
+        <button
+          onclick="window.history.back()"
+          class="bg-gray-300 text-gray-800 py-2 px-4 rounded mb-4 hover:bg-gray-400"
+        >
+          Back
+        </button>
+        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded">
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

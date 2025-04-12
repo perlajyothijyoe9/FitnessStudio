@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit User</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="flex flex-col min-h-screen">
+      <!-- Header -->
+      <header class="bg-blue-600 text-white p-4">
+        <h1 class="text-3xl font-bold">Edit User</h1>
+      </header>
+
+      <!-- Form Content -->
+      <main class="flex-1 p-6 flex items-center justify-center">
+        <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
+          <form
+            method="POST"
+            action="{{ url_for('edit_user', user_id=user['_id']) }}"
+            class="space-y-4"
+          >
+            <!-- User ID (Read-only) -->
+            <div>
+              <label
+                for="userID"
+                class="block text-sm font-medium text-gray-700"
+                >User ID</label
+              >
+              <input
+                type="text"
+                name="userID"
+                id="userID"
+                value="{{ user['_id'] }}"
+                readonly
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 text-gray-600"
+              />
+            </div>
+
+            <!-- First Name -->
+            <div>
+              <label
+                for="firstname"
+                class="block text-sm font-medium text-gray-700"
+                >First Name</label
+              >
+              <input
+                type="text"
+                name="firstname"
+                id="firstname"
+                value="{{ user['firstname'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                required
+              />
+            </div>
+
+            <!-- Last Name -->
+            <div>
+              <label
+                for="lastname"
+                class="block text-sm font-medium text-gray-700"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                name="lastname"
+                id="lastname"
+                value="{{ user['lastname'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700"
+                >Email</label
+              >
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value="{{ user['email'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                required
+              />
+            </div>
+
+            <!-- Phone Number -->
+            <div>
+              <label
+                for="phone_number"
+                class="block text-sm font-medium text-gray-700"
+                >Phone Number</label
+              >
+              <input
+                type="text"
+                name="phone_number"
+                id="phone_number"
+                value="{{ user['phone_number'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+            </div>
+
+            <!-- Date of Birth -->
+            <div>
+              <label for="dob" class="block text-sm font-medium text-gray-700"
+                >Date of Birth</label
+              >
+              <input
+                type="date"
+                name="dob"
+                id="dob"
+                value="{{ user['dob'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+            </div>
+
+            <!-- City -->
+            <div>
+              <label for="city" class="block text-sm font-medium text-gray-700"
+                >City</label
+              >
+              <input
+                type="text"
+                name="city"
+                id="city"
+                value="{{ user['city'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+            </div>
+
+            <!-- Zip Code -->
+            <div>
+              <label
+                for="zipcode"
+                class="block text-sm font-medium text-gray-700"
+                >Zip Code</label
+              >
+              <input
+                type="text"
+                name="zipcode"
+                id="zipcode"
+                value="{{ user['zipcode'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+            </div>
+
+            <!-- Height -->
+            <div>
+              <label
+                for="height"
+                class="block text-sm font-medium text-gray-700"
+                >Height</label
+              >
+              <div class="flex space-x-2 mt-1 mb-3">
+                <input
+                  type="number"
+                  id="height_feet"
+                  value="{{ user['height_feet'] }}"
+                  name="height_feet"
+                  class="block w-1/2 p-2 border border-gray-300 rounded"
+                  placeholder="Feet"
+                  required
+                />
+                <input
+                  type="number"
+                  id="height_inches"
+                  value="{{ user['height_inches'] }}"
+                  name="height_inches"
+                  class="block w-1/2 p-2 border border-gray-300 rounded"
+                  placeholder="Inches"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Weight -->
+            <div>
+              <label
+                for="weight"
+                class="block text-sm font-medium text-gray-700"
+                >Weight (Pounds)</label
+              >
+              <input
+                type="number"
+                name="weight"
+                id="weight"
+                value="{{ user['weight'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+            </div>
+
+            <!-- Goal Weight -->
+            <div>
+              <label
+                for="goal_weight"
+                class="block text-sm font-medium text-gray-700"
+                >Goal Weight (kg)</label
+              >
+              <input
+                type="number"
+                name="goal_weight"
+                id="goal_weight"
+                value="{{ user['goal_weight'] }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              />
+            </div>
+
+            <!-- Previous Health Issues -->
+            <div>
+              <label
+                for="previous_health_issues"
+                class="block text-sm font-medium text-gray-700"
+                >Previous Health Issues</label
+              >
+              <textarea
+                name="previous_health_issues"
+                id="previous_health_issues"
+                rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              >
+{{ user['previous_health_issues'] }}</textarea
+              >
+            </div>
+
+            <div class="flex justify-end gap-4 mt-6">
+              <button
+                onclick="window.history.back()"
+                class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                class="bg-blue-600 text-white py-2 px-4 rounded shadow hover:bg-blue-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

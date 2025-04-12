@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Attendees</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <header class="bg-blue-600 text-white p-4">
+      <h1 class="text-3xl font-bold">Attendees for {{ class_data.name }}</h1>
+    </header>
+    <main class="p-6">
+      <div class="mb-4">
+        <table class="w-full mt-2 bg-white p-4 shadow-md rounded">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border-b">Username</th>
+              <th class="py-2 px-4 border-b">Attendance Status</th>
+              <th class="py-2 px-4 border-b">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for attendee in attendees %}
+            <tr>
+              <td class="py-2 px-4 border-b">{{ attendee.username }}</td>
+              <td class="py-2 px-4 border-b">
+                {{ attendee.attendance_status }}
+              </td>
+              <td class="py-2 px-4 border-b">
+                <a
+                  href="{{ url_for('view_attendee_details', user_id=attendee['_id']) }}"
+                  class="text-blue-600"
+                  >View</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="flex items-center">
+        <button
+          type="button"
+          onclick="window.history.back()"
+          class="ml-auto bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+        >
+          Back
+        </button>
+      </div>
+    </main>
+  </body>
+</html>

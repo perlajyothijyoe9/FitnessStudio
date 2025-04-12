@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Management</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="flex flex-col min-h-screen">
+      <!-- Header -->
+      <header
+        class="bg-blue-600 text-white p-4 flex justify-between items-center"
+      >
+        <h1 class="text-3xl font-bold">User Dashboard</h1>
+        <button
+          onclick="window.history.back()"
+          class="bg-white text-blue-500 py-2 px-4 rounded hover:bg-gray-20"
+        >
+          Back
+        </button>
+      </header>
+
+      <!-- Main Content -->
+      <div class="flex-2 p-6">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div
+          class="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endif %} {% endwith %}
+        <h1 class="text-3xl font-bold mb-6">Your Bookings</h1>
+
+        <!-- Tabs -->
+        <div>
+          <button
+            id="active-tab-btn"
+            class="py-2 px-4 bg-blue-500 text-white rounded-md mr-2"
+          >
+            Active Bookings
+          </button>
+          <button
+            id="past-tab-btn"
+            class="py-2 px-4 bg-gray-300 text-gray-600 rounded-md"
+          >
+            Past Bookings
+          </button>
+        </div>
+
+        <!-- Active Bookings -->
+        <div id="active-tab" class="mt-6 bg-white p-4 shadow-md rounded">
+          <h2 class="text-2xl font-semibold mb-4">Active Bookings</h2>
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th class="py-2">Booking ID</th>
+                <th class="py-2">Class Name</th>
+                <th class="py-2">Booking Date</th>
+                <th class="py-2">Status</th>
+                <th class="py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for entry in active_bookings %}
+              <tr>
+                <td class="py-2">{{ entry.booking._id }}</td>
+                <td class="py-2">
+                  {{ entry.class_info.name if entry.class_info else "Class
+                  Deleted" }}
+                </td>
+                <td class="py-2">{{ entry.booking.booking_date }}</td>
+                <td class="py-2">{{ entry.booking.status }}</td>
+                <td class="py-2">
+                  {% if entry.booking.status == "Confirmed" and
+                  entry.booking.booking_date == today.strftime("%Y-%m-%d") %}
+                  <button
+                    onclick="recordAttendance('{{ entry.booking._id }}')"
+                    class="text-white bg-green-500 py-1 px-3 rounded"
+                  >
+                    Attend
+                  </button>
+                  {% elif entry.booking.status == "Attended" %}
+                  <p>Attendance Recorded!</p>
+                  {% else %}
+                  <button
+                    class="text-white bg-gray-400 py-1 px-3 rounded"
+                    disabled
+                  >
+                    Attend
+                  </button>
+                  {% endif %} {% if entry.booking.status == "Confirmed" %}
+                  <form
+                    action="{{ url_for('cancel_booking', booking_id=entry.booking._id) }}"
+                    method="POST"
+                  >
+                    <button
+                      class="text-white bg-red-500 py-1 px-3 rounded ml-2"
+                    >
+                      Cancel Booking
+                    </button>
+                  </form>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Past Bookings -->
+        <div id="past-tab" class="mt-6 bg-white p-4 shadow-md rounded hidden">
+          <h2 class="text-2xl font-semibold mb-4">Past Bookings</h2>
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th class="py-2">Booking ID</th>
+                <th class="py-2">Class Name</th>
+                <th class="py-2">Booking Date</th>
+                <th class="py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for entry in past_bookings %}
+              <tr>
+                <td class="py-2">{{ entry.booking._id }}</td>
+                <td class="py-2">
+                  {{ entry.class_info.name if entry.class_info else "Class
+                  Deleted" }}
+                </td>
+                <td class="py-2">{{ entry.booking.booking_date }}</td>
+                <td class="py-2">{{ entry.booking.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#active-tab-btn").click(function () {
+          $("#active-tab").show();
+          $("#past-tab").hide();
+          $(this)
+            .addClass("bg-blue-500 text-white")
+            .removeClass("bg-gray-300 text-gray-600");
+          $("#past-tab-btn")
+            .addClass("bg-gray-300 text-gray-600")
+            .removeClass("bg-blue-500 text-white");
+        });
+
+        $("#past-tab-btn").click(function () {
+          $("#active-tab").hide();
+          $("#past-tab").show();
+          $(this)
+            .addClass("bg-blue-500 text-white")
+            .removeClass("bg-gray-300 text-gray-600");
+          $("#active-tab-btn")
+            .addClass("bg-gray-300 text-gray-600")
+            .removeClass("bg-blue-500 text-white");
+        });
+      });
+
+      function recordAttendance(bookingId) {
+        $.ajax({
+          url: "/record_attendance",
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({ booking_id: bookingId }),
+          success: function (response) {
+            alert(response.message);
+            location.reload();
+          },
+          error: function (error) {
+            alert("Error recording attendance. Please try again.");
+          },
+        });
+      }
+
+      function cancelBooking(bookingId) {
+        $.ajax({
+          url: "/cancel_booking/" + bookingId,
+          method: "POST",
+          success: function (response) {
+            alert(response.message);
+            location.reload();
+          },
+          error: function (error) {
+            alert("Error canceling booking. Please try again.");
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

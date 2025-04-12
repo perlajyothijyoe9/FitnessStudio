@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Membership</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+      function toggleDietPlanForm() {
+        const dietPlanForm = document.getElementById("dietPlanForm");
+        dietPlanForm.style.display = document.getElementById("diet_plan_included").checked ? "block" : "none";
+      }
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800" onload="toggleDietPlanForm()">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-blue-600 text-white p-4">
+            <h1 class="text-3xl font-bold">Edit Membership</h1>
+        </header>
+        <main class="flex-1 p-6 flex items-center justify-center">
+            <div class="bg-white p-6 rounded shadow-md w-full max-w-lg">
+                <form method="POST" action="{{ url_for('edit_membership', membership_id=membership['_id']) }}" class="space-y-4">
+                    <div>
+                        <label for="membershipID" class="block text-sm font-medium text-gray-700">Membership ID</label>
+                        <input type="text" name="membershipID" id="membershipID" value="{{ membership['_id'] }}" readonly
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 text-gray-600">
+                    </div>
+
+                    <!-- Name -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" name="name" id="name" value="{{ membership['name'] }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+
+                    <!-- Price -->
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-700">Price ($)</label>
+                        <input type="number" name="price" id="price" value="{{ membership['price'] }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+
+                    <!-- Validity Period -->
+                    <div>
+                        <label for="validity_period" class="block text-sm font-medium text-gray-700">Validity Period</label>
+                        <select name="validity_period" id="validity_period" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <option value="30" {% if membership['validity_period'] == '30' %}selected{% endif %}>1 Month</option>
+                            <option value="90" {% if membership['validity_period'] == '90' %}selected{% endif %}>3 Months</option>
+                            <option value="182" {% if membership['validity_period'] == '182' %}selected{% endif %}>6 Months</option>
+                            <option value="365" {% if membership['validity_period'] == '365' %}selected{% endif %}>1 Year</option>
+                        </select>
+                    </div>
+
+                    <!-- Features -->
+                    <div>
+                        <label for="features" class="block text-sm font-medium text-gray-700">Features</label>
+                        <textarea name="features" id="features" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">{{ membership['features'] }}</textarea>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" name="diet_plan_included" id="diet_plan_included"
+                               {% if membership['diet_plan_included'] %}checked{% endif %}
+                               class="h-4 w-4 text-blue-600 border-gray-300 rounded" onchange="toggleDietPlanForm()">
+                        <label for="diet_plan_included" class="ml-2 block text-sm text-gray-700">Diet Plan Included</label>
+                    </div>
+
+                    <!-- Auto-Renewal -->
+                    <div class="flex items-center">
+                        <input type="checkbox" name="auto_renewal" id="auto_renewal"
+                               {% if membership['auto_renewal'] %}checked{% endif %}
+                               class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                        <label for="auto_renewal" class="ml-2 block text-sm text-gray-700">Auto Renewal</label>
+                    </div>
+
+                    <div id="dietPlanForm" style="display: none;">
+                        <hr class="my-4">
+                        <h3 class="text-lg font-medium">Diet Plan Details</h3>
+                        <div>
+                            <label for="diet_plan_name" class="block text-sm font-medium text-gray-700">Diet Plan Name</label>
+                            <input type="text" name="diet_name" id="diet_plan_name" value="{{ diet_plan['name'] if diet_plan else '' }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+
+                    <!-- Diet Plan Description -->
+                    <div>
+                        <label for="diet_plan_description" class="block text-sm font-medium text-gray-700">Diet Plan Description</label>
+                        <textarea name="diet_description" id="diet_plan_description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">{{ diet_plan['description'] if diet_plan else '' }}</textarea>
+                    </div>
+
+                    <!-- Meal Schedule -->
+                    <h4 class="text-md font-medium mt-4">Meal Schedule</h4>
+
+                    <!-- Breakfast -->
+                    <div>
+                        <label for="breakfast" class="block text-sm font-medium text-gray-700">Breakfast</label>
+                        <input type="text" name="meal_schedule[breakfast]" id="breakfast" value="{{ diet_plan['meal_schedule']['breakfast'] if diet_plan and diet_plan['meal_schedule'] else '' }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Enter breakfast items and time">
+                    </div>
+
+                    <!-- Lunch -->
+                    <div>
+                        <label for="lunch" class="block text-sm font-medium text-gray-700">Lunch</label>
+                        <input type="text" name="meal_schedule[lunch]" id="lunch" value="{{ diet_plan['meal_schedule']['lunch'] if diet_plan and diet_plan['meal_schedule'] else '' }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Enter lunch items and time">
+                    </div>
+
+                    <!-- Dinner -->
+                    <div>
+                        <label for="dinner" class="block text-sm font-medium text-gray-700">Dinner</label>
+                        <input type="text" name="meal_schedule[dinner]" id="dinner" value="{{ diet_plan['meal_schedule']['dinner'] if diet_plan and diet_plan['meal_schedule'] else '' }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Enter dinner items and time">
+                    </div>
+
+                    <!-- Diet Plan Start Date -->
+                    <div>
+                        <label for="diet_plan_start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+                        <input type="date" name="start_date" id="diet_plan_start_date" value="{{ diet_plan['start_date'].strftime('%Y-%m-%d') if diet_plan else '' }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+
+                    <!-- Diet Plan End Date -->
+                    <div>
+                        <label for="diet_plan_end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+                        <input type="date" name="end_date" id="diet_plan_end_date" value="{{ diet_plan['end_date'].strftime('%Y-%m-%d') if diet_plan else '' }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-4 mt-6">
+                    <button
+                      onclick="window.history.back()"
+                      class="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      class="bg-blue-600 text-white py-2 px-4 rounded shadow hover:bg-blue-700"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>

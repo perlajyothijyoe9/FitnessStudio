@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <!-- Container -->
+    <div class="flex justify-center items-center h-screen">
+      <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <div
+          class="bg-{{ 'green' if category == 'success' else 'red' }}-100 border border-{{ 'green' if category == 'success' else 'red' }}-400 text-{{ 'green' if category == 'success' else 'red' }}-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endif %} {% endwith %}
+        <h2 class="text-3xl font-bold text-center mb-6">Create an Account</h2>
+        <!-- Sign Up Form -->
+        <form
+          action="{{ url_for('user_signup') }}"
+          method="post"
+          class="space-y-4"
+        >
+          <div>
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700"
+              >Username</label
+            >
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div>
+            <label
+              for="confirm_password"
+              class="block text-sm font-medium text-gray-700"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div>
+            <label
+              for="phone_number"
+              class="block text-sm font-medium text-gray-700"
+              >Phone Number</label
+            >
+            <input
+              type="text"
+              id="phone_number"
+              name="phone_number"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+            />
+          </div>
+          <div>
+            <label for="height" class="block text-sm font-medium text-gray-700"
+              >Height (cm)</label
+            >
+            <input
+              type="number"
+              id="height"
+              name="height"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+            />
+          </div>
+          <div>
+            <label for="weight" class="block text-sm font-medium text-gray-700"
+              >Weight (kg)</label
+            >
+            <input
+              type="number"
+              id="weight"
+              name="weight"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+            />
+          </div>
+          <div>
+            <label
+              for="goal_weight"
+              class="block text-sm font-medium text-gray-700"
+              >Goal Weight (kg)</label
+            >
+            <input
+              type="number"
+              id="goal_weight"
+              name="goal_weight"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+            />
+          </div>
+          <div>
+            <label
+              for="previous_health_issues"
+              class="block text-sm font-medium text-gray-700"
+              >Previous Health Issues</label
+            >
+            <textarea
+              id="previous_health_issues"
+              name="previous_health_issues"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-green-600 text-white p-2 rounded-md hover:bg-green-700"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <!-- Login Link -->
+        <p class="mt-4 text-center text-sm">
+          Already have an account?
+          <a
+            href="{{ url_for('login') }}"
+            class="text-green-600 hover:underline"
+            >Login</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

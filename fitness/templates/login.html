@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Fitness</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <!-- Container -->
+    <div class="flex items-center justify-center min-h-screen">
+      <div class="bg-white p-8 rounded-md shadow-md w-full max-w-md">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div
+          class="bg-{{ 'green' if category == 'success' else 'red' }}-100 border border-{{ 'green' if category == 'success' else 'red' }}-400 text-{{ 'green' if category == 'success' else 'red' }}-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          <ul>
+            {% for category, message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %} {% endwith %}
+        <h1 class="text-2xl font-bold mb-6">Login</h1>
+        <form
+          action="{{ url_for('login', next=next) }}"
+          method="POST"
+          class="space-y-4"
+        >
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label
+              for="user_type"
+              class="block text-sm font-medium text-gray-700"
+              >User Type</label
+            >
+            <select
+              id="user_type"
+              name="user_type"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            >
+              <option value="user">User</option>
+              <option value="trainer">Trainer</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}" />
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
+          >
+            Login
+          </button>
+        </form>
+        <div class="mt-4 flex justify-between">
+          <a
+            href="{{ url_for('user_signup') }}"
+            class="text-blue-600 hover:underline"
+            >New? Register Here</a
+          >
+          <a
+            href="{{ url_for('forgot_password') }}"
+            class="text-blue-600 hover:underline"
+            >Forgot Password?</a
+          >
+
+          <a href="/" class="text-blue-600 hover:underline">Go Back to Index</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

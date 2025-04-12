@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="flex flex-col min-h-screen">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endif %} {% endwith %}
+      <!-- Header -->
+      <header
+        class="bg-blue-600 text-white p-4 flex justify-between items-center"
+      >
+        <h1 class="text-3xl font-bold">Welcome to Your Dashboard</h1>
+        <form action="{{ url_for('logout') }}">
+          <button
+            type="submit"
+            class="bg-white text-blue-500 py-2 px-4 rounded hover:bg-gray-20"
+          >
+            Logout
+          </button>
+        </form>
+      </header>
+      <!-- Main Content -->
+      <main class="flex-1 p-6">
+        <!-- Payment History Tab (Always Visible) -->
+        <section id="payments-tab" class="bg-white p-4 shadow-md rounded mb-6">
+          <h2 class="text-2xl font-semibold mb-4">Payment History</h2>
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th class="py-2 px-4 border-b">Payment ID</th>
+                <th class="py-2 px-4 border-b">Membership</th>
+                <th class="py-2 px-4 border-b">Amount</th>
+                <th class="py-2 px-4 border-b">Date</th>
+                <th class="py-2 px-4 border-b">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for payment in payments %}
+              <tr>
+                <td class="py-2 px-4 border-b">{{ payment['_id'] }}</td>
+                <td class="py-2 px-4 border-b">${{ payment['amount'] }}</td>
+                <td class="py-2 px-4 border-b">
+                  {{ payment['payment_date'].strftime('%Y-%m-%d') }}
+                </td>
+                <td class="py-2 px-4 border-b">{{ payment['status'] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Membership Status-Specific Content -->
+        {% if membership_status == "active" %}
+        <!-- Active Membership Content -->
+        <section class="bg-white p-4 shadow-md rounded">
+          <h2 class="text-2xl font-semibold mb-4">Active Membership</h2>
+          <p>Membership Ends in: {{membership["expire_days"] }}</p>
+          <p>
+            Diet Plan: {{ membership["diet_plan"]["name"] if
+            membership["diet_plan"] else "No Diet Plan Assigned" }}
+          </p>
+
+          <!-- Tabs for Active Members -->
+          <div class="mt-6">
+            <a
+              href="{{ url_for('get_diet_plans') }}"
+              class="bg-blue-500 text-white py-2 px-4 rounded mr-2"
+              >Diet Plan</a
+            >
+            <a
+              href="{{ url_for('get_user_bookings') }}"
+              class="bg-blue-500 text-white py-2 px-4 rounded mr-2"
+              >Bookings</a
+            >
+            <a
+              href="{{ url_for('get_classes') }}"
+              class="bg-blue-500 text-white py-2 px-4 rounded"
+              >Classes</a
+            >
+          </div>
+        </section>
+
+        {% elif membership_status == "expired" %}
+        <!-- Expired Membership Content -->
+        <section class="bg-red-100 p-4 shadow-md rounded">
+          <h2 class="text-2xl font-semibold mb-4 text-red-600">
+            Membership Expired
+          </h2>
+          <p>
+            Your membership has expired. Renew your membership to continue
+            accessing services.
+          </p>
+          <a
+            href="{{ url_for('get_user_memberships') }}"
+            class="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+            >Renew Membership</a
+          >
+        </section>
+
+        {% else %}
+        <!-- No Membership Content -->
+        <section class="bg-yellow-100 p-4 shadow-md rounded">
+          <h2 class="text-2xl font-semibold mb-4 text-yellow-600">
+            No Active Membership
+          </h2>
+          <p>You currently do not have an active membership.</p>
+          <a
+            href="{{ url_for('get_user_memberships') }}"
+            class="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+            >View Membership Plans</a
+          >
+        </section>
+        {% endif %}
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Class</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <header class="bg-blue-600 text-white p-4">
+      <h1 class="text-3xl font-bold">Create New Class</h1>
+    </header>
+    <main class="p-6">
+      <form
+        action="{{ url_for('add_class') }}"
+        method="post"
+        class="bg-white p-6 rounded shadow-md"
+      >
+        <label for="name" class="block text-lg font-semibold mb-2"
+          >Class Name:</label
+        >
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <label for="category" class="block text-sm font-medium text-gray-700"
+          >Class Category</label
+        >
+        <select
+          id="category"
+          name="category"
+          class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+        >
+          <option value="">Select a category</option>
+          <option value="Yoga">Yoga</option>
+          <option value="Pilates">Pilates</option>
+          <option value="Strength Training">Strength Training</option>
+          <option value="Cardio">Cardio</option>
+          <!-- Add other categories as needed -->
+        </select>
+
+        <label for="capacity" class="block text-lg font-semibold mb-2"
+          >Capacity:</label
+        >
+        <input
+          type="number"
+          id="capacity"
+          name="capacity"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <label for="start_date" class="block text-lg font-semibold mb-2"
+          >Start Date:</label
+        >
+        <input
+          type="date"
+          id="start_date"
+          name="start_date"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <label for="end_date" class="block text-lg font-semibold mb-2"
+          >End Date:</label
+        >
+        <input
+          type="date"
+          id="end_date"
+          name="end_date"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <label for="time" class="block text-lg font-semibold mb-2">Time:</label>
+        <select
+          id="time"
+          name="time"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        >
+          <option value="">Select Time</option>
+          <option value="07:00-08:00">07:00 AM to 08:00 AM</option>
+          <option value="08:00-09:00">08:00 AM to 09:00 AM</option>
+          <option value="09:00-10:00">09:00 AM to 10:00 AM</option>
+          <option value="10:00-11:00">10:00 AM to 11:00 AM</option>
+          <option value="11:00-12:00">11:00 AM to 12:00 PM</option>
+          <option value="12:00-01:00">12:00 PM to 01:00 PM</option>
+          <option value="01:00-02:00">01:00 PM to 02:00 PM</option>
+          <option value="02:00-03:00">02:00 PM to 03:00 PM</option>
+          <option value="03:00-04:00">03:00 PM to 04:00 PM</option>
+          <option value="04:00-05:00">04:00 PM to 05:00 PM</option>
+          <option value="05:00-06:00">05:00 PM to 06:00 PM</option>
+        </select>
+
+        <label for="venue" class="block text-lg font-semibold mb-2"
+          >Venue:</label
+        >
+        <input
+          type="text"
+          id="venue"
+          name="venue"
+          required
+          class="w-full border border-gray-300 p-2 rounded mb-4"
+        />
+
+        <div class="flex items-center">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white py-2 px-4 rounded"
+          >
+            Create Class
+          </button>
+          <button
+            type="button"
+            onclick="window.history.back()"
+            class="ml-auto bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+          >
+            Back
+          </button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

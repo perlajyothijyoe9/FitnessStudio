@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trainer Login - Fitness</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <!-- Container -->
+    <div class="flex items-center justify-center min-h-screen">
+      <div class="bg-white p-8 rounded-md shadow-md w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-6">Trainer Login</h1>
+        <form action="/login" method="POST" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
+          >
+            Login
+          </button>
+        </form>
+        <div class="mt-4">
+          <a href="/" class="text-blue-600 hover:underline"
+            >Go Back to Index Page</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

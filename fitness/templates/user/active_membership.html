@@ -1,0 +1,55 @@
+<!-- templates/user/active_membership.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Active Membership</title>
+  </head>
+  <body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <h2>Your Active Membership</h2>
+
+    {% if membership %}
+    <div class="membership-details">
+      <h3>{{ membership.name }}</h3>
+      <p>Price: ${{ membership.price }}</p>
+      <p>Validity Period: {{ membership.validity_period }} days</p>
+      <p>Features:</p>
+      <ul>
+        {% for feature in membership.features %}
+        <li>{{ feature }}</li>
+        {% endfor %}
+      </ul>
+      <p>
+        Diet Plan Included: {{ "Yes" if membership.diet_plan_included else "No"
+        }}
+      </p>
+
+      {% if membership.diet_plan %}
+      <h4>Your Diet Plan</h4>
+      <p>Name: {{ membership.diet_plan.name }}</p>
+      <p>Description: {{ membership.diet_plan.description }}</p>
+      <h5>Meal Schedule</h5>
+      <ul>
+        {% for meal, items in membership.diet_plan.meal_schedule.items() %}
+        <li><strong>{{ meal }}:</strong> {{ items | join(", ") }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <p>
+        <strong>Expires On:</strong> {{
+        membership.expiration_date.strftime('%Y-%m-%d') }}
+      </p>
+    </div>
+
+    <a href="{{ url_for('get_classes') }}">View Available Classes</a>
+    <a href="{{ url_for('get_user_bookings') }}">View Your Bookings</a>
+    {% else %}
+    <p>
+      You do not have an active membership. Please renew or purchase a new one.
+    </p>
+    <a href="{{ url_for('get_user_memberships') }}">View Membership Options</a>
+    {% endif %}
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!-- templates/user/renew_membership_page.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Renew Membership</title>
+  </head>
+  <body>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div
+      class="bg-{{ 'green' if category == 'success' else 'red' }}-100 border border-{{ 'green' if category == 'success' else 'red' }}-400 text-{{ 'green' if category == 'success' else 'red' }}-700 px-4 py-3 rounded relative"
+      role="alert"
+    >
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {% endif %} {% endwith %}
+    <h1>Renew Your Membership</h1>
+
+    <p>
+      Your membership has expired or is inactive. Choose a membership plan to
+      renew:
+    </p>
+
+    <div class="membership-options">
+      {% for membership in memberships %}
+      <div class="membership">
+        <h3>{{ membership.name }}</h3>
+        <p>Price: ${{ membership.price }}</p>
+        <p>Validity: {{ membership.validity_period }} days</p>
+        <p>Features:</p>
+        <ul>
+          {% for feature in membership.features %}
+          <li>{{ feature }}</li>
+          {% endfor %}
+        </ul>
+        <p>
+          Diet Plan Included: {{ "Yes" if membership.diet_plan_included else
+          "No" }}
+        </p>
+
+        <form action="{{ url_for('initiate_payment') }}" method="post">
+          <input
+            type="hidden"
+            name="membership_id"
+            value="{{ membership._id }}"
+          />
+          <input type="hidden" name="amount" value="{{ membership.price }}" />
+          <button type="submit">Purchase Membership</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Button to view all memberships -->
+    <a href="{{ url_for('get_user_memberships') }}">
+      <button>View All Memberships</button>
+    </a>
+
+    <a href="{{ url_for('user_dashboard') }}">
+      <button>Back to Dashboard</button>
+    </a>
+  </body>
+</html>
